@@ -1,0 +1,124 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage{array}
+\usepackage{threeparttable}
+\usepackage{geometry}
+
+\usepackage{natbib}
+
+%\usepackage{jf} %always check the instruction of the package to see if it conflicts
+\geometry{letterpaper,tmargin=1in,bmargin=1in,lmargin=1.25in,rmargin=1.25in}
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{}
+\cfoot{}
+\rfoot{\footnotesize\textsl{Page \thepage\ of \pageref{LastPage}}}
+\renewcommand\headrulewidth{0pt}
+\renewcommand\footrulewidth{0pt}
+\usepackage[format=hang,font=normalsize,labelfont=bf]{caption}
+\usepackage{listings}
+\lstset{frame=single,
+  language=Python,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=3
+}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{harvard}
+\usepackage{setspace}
+\usepackage{float,color}
+\usepackage[pdftex]{graphicx}
+\usepackage{hyperref}
+\hypersetup{colorlinks,linkcolor=red,urlcolor=blue,citecolor=blue}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{derivation}{Derivation} % Number derivations on their own
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}{Proposition} % Number propositions on their own
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+%\numberwithin{equation}{section}
+%\bibliographystyle{aer}
+\newcommand\ve{\varepsilon}
+\newcommand\boldline{\arrayrulewidth{1pt}\hline}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\begin{document}
+	
+\begin{flushleft}
+	\textbf{\large{Problem Set \# 4}} \\
+	Finance Department, Yafei Zhang \\
+		
+		
+\end{flushleft}
+	
+\vspace{5mm}
+
+\noindent\textbf{Data-cleaning process} \\
+In this section, I will briefly introduce how I clean and re-construct the data. The goal of data-cleaning is to construct a dataframe which includes all the variables such as $\ x_{1bm}y_{1tm} $, $\ x_{2bm}y_{1tm} $, and $\ distance_{btm} $ in the payoff function $\ f_m(b, t) $. The main process consists of three steps.
+
+First, scale original variables and calculate variables for observed matches. Particularly, I scale number of stations, $\ x_{1bm}$, and market concentration, $\ HHI_{tm}$, into logs. I put prices and population, $\ y_{1tm}$, into logs of thousands of dollars and people. Then I calculate the variables for observed matches in the payoff function. I.e., variables on the left hand side of the inequalities. Besides, I define a function to calculate the distance between matched pairs. Note that I also define another function to calculate the distance between counterfactual matches before I move into the loops.
+
+Second, split the dataset into two years. Because the matches are observed in dependently in two markets of two years. Payoffs have to be calculated separately in two different years.
+
+Third, loop over two markets and get the final dataframe which is used to calculate payoff and compare inequalities. For the loop, I define a couple of arrays to store variables for all the unique comparisons (990 for year 2007 and 1431 for year 2008). And I define a simple function outside of the loop to return me two dataframes with the same structure for years 2007 and 2008. After the loop, I append the two dataframes together into one. This is the final dataframe that I need to do the comparisons.
+
+\vspace{5mm}
+
+\noindent\textbf{Results interpretation} \\
+In this section, I interpret the results of maximum score estimation. I use the Nelder-Mead method to maximize the score function. I tried the differential evolution method, but the coefficients are sensitive to the bounds I set. The Nelder-Mead method is more stable although if I change the initial guess the coefficients change slightly. To make the interpretation easier, I focus on the results estimated from Nelder-Mead method.
+
+The following are the results estimated for model 1: 
+\begin{equation*}
+f_m(b, t) = x_{1bm}y_{1tm} + 7.375x_{2bm}y_{1tm} - 11.7distance_{btm} + \epsilon_{btm}.
+\end{equation*}
+
+There are two implications from the above equation. First, interaction of buyer corporate ownership and target population is positively related with the merger payoff while distance between buyer and target is negatively related with the merger payoff. Second, since the coefficient on $\ x_{1bm}y_{1tm} $ has been normalized to 1, the other two coefficients demonstrate that buyer corporate ownership and distance are more important than the size of the buyer in determining the merger value. Economically speaking, everything else equal, the importance of corporate ownership of the buyer is around 7 times more than that of the buyer size. And the geographic proximity is about 12 times more important than the buyer size. Because we don't include price in the model, it is hard to interpret marginal effects economically. I will do this for the second model which includes price in the equation.
+
+For model 2, the estimated model is:
+\begin{equation*}
+f_m(b, t) = 11.855x_{1bm}y_{1tm} + 38x_{2bm}y_{1tm} + 15.083HHI_{tm} - 99.463distance_{btm} + \epsilon_{btm}.
+\end{equation*}
+ 
+If we consider the number of stations of the buyer as a size measurement of the buyer. The coefficient on $\ x_{1bm}y_{1tm} $ suggests that size match is an important factor for the merger payoff since the interaction is positive.
+ 
+The coefficient on $\ x_{2bm}y_{1tm} $ is positive and has value of 38 which is much higher than that on $\ x_{1bm}y_{1tm} $. This suggests that when the buyer has corporate ownership, the larger the target size, the higher the merger payoff. This highlights the interaction between buyer corporate ownership and the target population. 
+
+We are also able to identify the importance of market concentration of the target since we put merger price in the model. Coefficient on $\ HHI_{tm} $ suggests that market concentration of target is positively related with the merger payoff. This positive coefficient is probably due to that if the target is able to survive in a more concentrated market, the target is more valuable to the buyer. This increases the merger payoff. To better understand the effect of market competition on the merger payoff, it would be better if market share of the target can also be measured and put in the model.
+
+Distance carries the same sign as in model 1. A simple comparison among the magnitude of coefficients demonstrate that distance is still, like in model 1, the most important factor affecting the merger value. This emphasizes the importance of geographic proximity to radio station merger.
+
+Since we put price in the model, we can interpret the coefficients as marginal effects of merger value in dollars. That is, a one-unit increase of $\ x_{1bm}y_{1tm} $ will lead to an increase of $\ e^{11.855} * 1000 $ dollars of merger payoff. Note that I scale the price using $\ log (price/1000) $. Similarly, a one-unit increase of $\ x_{2bm}y_{1tm} $ will increase the merger value by $\ e^{38} * 1000 $ dollars. A one-unit increase of market concentration of target will increase the merger value by $\ e^{15.083} * 1000 $ dollars. And a one-unit increase of the distance (note that the distance is in log value of the miles) will increase the merger value by $\ e^{99.463} * 1000 $ dollars.
+
+ 
+
+
+
+
+
+\end{document}
