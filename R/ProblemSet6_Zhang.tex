@@ -1,0 +1,110 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage{array}
+\usepackage{threeparttable}
+\usepackage{geometry}
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyvrb}
+
+\usepackage{natbib}
+
+%\usepackage{jf} %always check the instruction of the package to see if it conflicts
+\geometry{letterpaper,tmargin=1in,bmargin=1in,lmargin=1.25in,rmargin=1.25in}
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{}
+\cfoot{}
+\rfoot{\footnotesize\textsl{Page \thepage\ of \pageref{LastPage}}}
+\renewcommand\headrulewidth{0pt}
+\renewcommand\footrulewidth{0pt}
+\usepackage[format=hang,font=normalsize,labelfont=bf]{caption}
+\usepackage{listings}
+\lstset{frame=single,
+  language=Python,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=3
+}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{harvard}
+\usepackage{setspace}
+\usepackage{float,color}
+\usepackage[pdftex]{graphicx}
+\usepackage{hyperref}
+\hypersetup{colorlinks,linkcolor=red,urlcolor=blue,citecolor=blue}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{derivation}{Derivation} % Number derivations on their own
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}{Proposition} % Number propositions on their own
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+%\numberwithin{equation}{section}
+%\bibliographystyle{aer}
+\newcommand\ve{\varepsilon}
+\newcommand\boldline{\arrayrulewidth{1pt}\hline}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\usepackage{graphicx}
+\graphicspath{ {c:/users/yafei/compecon_fall17/visualization} }
+
+\title{Problem Set 6: Econometrics in R}
+\author{Yafei Zhang \thanks{Yafei Zhang is from Finance department of USC, he can be reached at yafei.zhang@grad.moore.sc.edu.}}
+\date{October 28 2017}
+
+\begin{document}
+	
+	\maketitle
+	
+	\vspace{5mm}
+
+\section{Introduction}
+
+The empirical tests in this problem set are for the use of a current project that I am working on \footnote{Please keep these preliminary results confidential.}. This project is about syndicated loans in U.S.. 
+
+Syndicated loans are an important source of outside financing. In loan syndications, lead arrangers are the banks who administrate the whole process. Literature has stressed the relationship between lead arranger and the borrower substantially and finds that lending relationship (i.e., the relationship between lead arranger and borrower) can attenuate information asymmetry between the borrower and lenders in the loan market. As such, borrowers would enjoy favorable loan terms such as lower interest rate, larger amount, and less financial covenants.
+
+Besides, since 2003, a large majority of syndicated loans have been specifically structured to institutional investors such as loan mutual funds, hedge funds, insurance companies, so forth. These loans are called institutional loans. For institutional loans, the lead arrangers can do a road show to collect information from other participant banks \footnote{In the road show, the lead arranger meets with institutional investors. The institutional investors tell the lead arranger what price and amount they want to buy for the loan. These price and amount are very important information for the lead arranger to gauge the demand of the market. Based on these information, lead arranger would adjust the loan terms that it originally set.}.
+
+I am interested in how lending relationship affects the information production in this road show. I expect that lending relationship would be negatively associated with the information production in road show. One of the reasons could be that lead arranger is well-informed about the borrower if it has strong relationship with the borrower. It can set the original price very accurately. This lowers the need to collect information from institutional investors in the road show.
+
+\section{Table interpretation}
+
+Dependent variables in all the three specifications are Spread Adjustments, which is the absolute value of spread adjustments during the road show of syndicated loans. I use this variable to represent the information produced in the road show. The larger the spread adjustments, the more information production is in the road show. The variable I am most interested is borrower{\_}lead{\_}amount, which represents the lending relationship between lead arranger and the borrower. According to the discussion above, I expect a negative association between borrower{\_}lead{\_}amount and Spread Adjustments.
+
+Specification (1) is the regular OLS regression without fixed effects. Specification (2) is OLS regression with fixed effects. And specification (3) is a 2SLS instrumental regression. Log{\_}amt is the natural logarithm value of loan amount in million dollars. Log{\_}term is the natural logarithm value of loan maturity in years. Dum{\_}public is a dummy variable which equals one if the firm is public, zero otherwise. Dum{\_}sponsor is a dummy variable which equals one if the loan has sponsor, zero otherwise. Dum{\_}prepay is a dummy variable which equals one if the loan has prepay fees, zero otherwise. Dum{\_}floor is a dummy variable which equals one if the loan has an interest rate floor. Dum{\_}refin is a dummy variable which equals one if the loan's purpose is refinancing, zero otherwise. Dum{\_}secure is a dummy variable which equals one if the loan is secured, zero otherwise. Dum{\_}cov is a dummy variable which equals one if the loan has light financial covenants, zero otherwise.
+
+Coefficients on three specifications are all negative and significant at 1 percent level. This suggests that a stronger lending relationship is associated with lower spread adjustments in the road show. This is consistent with my prediction. Other controls variables carry the same signs predicted by previous literature. For example, log{\_}amt is positively related with Spread Adjustments. This means that larger loans have higher spread adjustments in the road show. The reason could be that larger loans are more uncertain than small loans. Larger loans also need more banks to participate in the deal, so the credit supply may not be enough. This gives rise to the liquidity uncertainty. 
+
+\clearpage
+\VerbatimInput{models.txt}
+
+
+	
+\end{document}

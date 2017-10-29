@@ -1,0 +1,46 @@
+
+% Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Sat, Oct 28, 2017 - 11:29:18 PM
+% Requires LaTeX packages: dcolumn 
+\begin{table}[!htbp] \centering 
+  \caption{PS6 Regression Results} 
+  \label{} 
+\begin{tabular}{@{\extracolsep{5pt}}lD{.}{.}{-3} D{.}{.}{-3} D{.}{.}{-3} } 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+\\[-1.8ex] & \multicolumn{3}{c}{} \\ 
+\\[-1.8ex] & \multicolumn{2}{c}{\textit{OLS}} & \multicolumn{1}{c}{\textit{instrumental}} \\ 
+ & \multicolumn{2}{c}{\textit{}} & \multicolumn{1}{c}{\textit{variable}} \\ 
+ & \multicolumn{1}{c}{Without Fixed Effects} & \multicolumn{1}{c}{With Fixed Effects} & \multicolumn{1}{c}{2SLS} \\ 
+\\[-1.8ex] & \multicolumn{1}{c}{(1)} & \multicolumn{1}{c}{(2)} & \multicolumn{1}{c}{(3)}\\ 
+\hline \\[-1.8ex] 
+ borrower\_lead\_amt & -0.076^{***} & -0.060^{***} & -0.566^{***} \\ 
+  & (0.011) & (0.012) & (0.135) \\ 
+  log\_amt & 2.817^{***} & 1.939^{***} & 3.626^{***} \\ 
+  & (0.465) & (0.540) & (0.782) \\ 
+  log\_term & 3.199^{*} & 5.389^{***} & 1.211 \\ 
+  & (1.699) & (2.014) & (2.636) \\ 
+  dum\_public & -0.241 & 0.113 & 1.078 \\ 
+  & (1.069) & (1.166) & (1.408) \\ 
+  dum\_sponsor & -1.075 & -1.057 & 1.418 \\ 
+  & (0.984) & (1.147) & (1.512) \\ 
+  dum\_prepay & 7.443^{***} & 9.794^{***} & 9.182^{***} \\ 
+  & (1.159) & (1.262) & (1.507) \\ 
+  dum\_floor & 2.540^{**} & 4.282 & 5.309 \\ 
+  & (1.158) & (2.851) & (3.395) \\ 
+  dum\_refin & -8.811^{***} & -7.148^{***} & -0.090 \\ 
+  & (0.925) & (1.372) & (2.484) \\ 
+  dum\_secure & 3.201 & 1.953 & 4.596 \\ 
+  & (2.320) & (2.516) & (3.068) \\ 
+  dum\_cov & -8.209^{***} & -5.494^{***} & -5.268^{***} \\ 
+  & (1.106) & (1.257) & (1.493) \\ 
+  Constant & -3.734 & -10.476 & -20.593 \\ 
+  & (4.207) & (29.057) & (34.597) \\ 
+ \hline \\[-1.8ex] 
+Observations & \multicolumn{1}{c}{4,788} & \multicolumn{1}{c}{4,788} & \multicolumn{1}{c}{4,788} \\ 
+Adjusted R$^{2}$ & \multicolumn{1}{c}{0.061} & \multicolumn{1}{c}{0.108} & \multicolumn{1}{c}{-0.257} \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table} 
