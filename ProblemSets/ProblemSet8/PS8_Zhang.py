@@ -22,6 +22,7 @@ import numba
 
 ### Define functions
 # Define a function to get aggregate value
+
 def Agg(matA, matB):
     aggregate = (np.multiply(matA, matB)).sum()
     return aggregate
@@ -160,7 +161,7 @@ def MKclear(w):
 
     start_time = time.clock()
     while VFdist > VFtol and VFiter < VFmaxiter:
-        TV = V    
+        TV = V
         Vmat = VFI_loop(V, e, betafirm, sizez, sizek, Vmat, pi)
         Vstore[:, :, VFiter] = V.reshape(sizez, sizek,)  # store value function at each
         # iteration for graphing later
@@ -170,14 +171,14 @@ def MKclear(w):
         VFdist = (np.absolute(V - TV)).max()  # check distance between value
         # function for this iteration and value function from past iteration
         VFiter += 1
-    
+
     VFI_time = time.clock() - start_time
     if VFiter < VFmaxiter:
         print('Value function converged after this many iterations:', VFiter)
     else:
         print('Value function did not converge')
     print('VFI took ', VFI_time, ' seconds to solve')
-    
+
     VF = V  # solution to the functional equation
 
 
@@ -207,7 +208,7 @@ def MKclear(w):
         SDdist = (np.absolute(HGamma - Gamma)).max()
         Gamma = HGamma
         SDiter += 1
-        
+
     if SDiter < SDmaxiter:
         print('Stationary distribution converged after this many iterations: ',
               SDiter)
@@ -238,7 +239,7 @@ def MKclear(w):
     optALS = w/(h * optCON)
 
     mkclear = abs(optALS - optALD)
-    
+
     # Stationary distribution in 3D
     zmat, kmat = np.meshgrid(kgrid, np.log(z_grid))
     fig = plt.figure(figsize=(10, 8))
@@ -251,7 +252,7 @@ def MKclear(w):
     ax.set_ylabel(r'Capital Stock')
     ax.set_zlabel(r'Density')
     fig.savefig('figure_std.png', transparent=False, dpi=80, bbox_inches="tight")
-    
+
     # Plot policy function for k'
     zmat, kmat = np.meshgrid(kgrid, np.log(z_grid))
     fig = plt.figure(figsize=(10, 8))
@@ -263,9 +264,9 @@ def MKclear(w):
     ax.set_ylabel(r'Capital Stock')
     ax.set_zlabel(r'Optimal Capital Stock')
     fig.savefig('figure_policy.png', transparent=False, dpi=80, bbox_inches="tight")
-    
+
     return mkclear
-    
+
 # Call the minimizer
 # Minimize with (truncated) Newton's method (called Newton Conjugate Gradient method)
 wage_initial = w
@@ -276,5 +277,3 @@ GE_results = opt.minimize(MKclear, wage_initial, method='Nelder-Mead', tol = 1e-
 ### Output results
 opt_w = GE_results['x']
 print('The equilibrium wage rate =', opt_w)
-
-

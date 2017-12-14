@@ -1,0 +1,139 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage{array}
+\usepackage{threeparttable}
+\usepackage{geometry}
+
+\usepackage{natbib}
+
+%\usepackage{jf} %always check the instruction of the package to see if it conflicts
+\geometry{letterpaper,tmargin=1in,bmargin=1in,lmargin=1.25in,rmargin=1.25in}
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{}
+\cfoot{}
+\rfoot{\footnotesize\textsl{Page \thepage\ of \pageref{LastPage}}}
+\renewcommand\headrulewidth{0pt}
+\renewcommand\footrulewidth{0pt}
+\usepackage[format=hang,font=normalsize,labelfont=bf]{caption}
+\usepackage{listings}
+\lstset{frame=single,
+  language=Python,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=3
+}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{harvard}
+\usepackage{setspace}
+\usepackage{float,color}
+\usepackage[pdftex]{graphicx}
+\usepackage{hyperref}
+\hypersetup{colorlinks,linkcolor=red,urlcolor=blue,citecolor=blue}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{derivation}{Derivation} % Number derivations on their own
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}{Proposition} % Number propositions on their own
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+%\numberwithin{equation}{section}
+%\bibliographystyle{aer}
+\newcommand\ve{\varepsilon}
+\newcommand\boldline{\arrayrulewidth{1pt}\hline}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\usepackage{graphicx}
+\graphicspath{ {c:/users/yafei/compecon_fall17/visualization} }
+
+\title{Problem Set 9: Simulated Method of Moments}
+\author{Yafei Zhang \thanks{Yafei Zhang is from Finance department of USC, he can be reached at yafei.zhang@grad.moore.sc.edu.}}
+\date{December 14 2017}
+
+\begin{document}
+
+\maketitle
+
+\vspace{5mm}
+
+\section{Introduction}
+
+In this problem set, I will use Simulated Method of Moments (SMM) to estimate the parameters in the firms' problem. The codes I used in this problem set are benefited from the discussions with Foteini, Justin, Mathew, Zehra, Alex, and Destan. I appreciate their help in some parts of the codes, especially the simulation part. The structure of this problem set is as follows. In section 2, I will briefly go through the SMM method. Section 3 will explain the codes. Section 4 describes the estimation results.
+
+
+\section{Simulated Method of Moments}
+
+Simulated Method of Moments estimates the parameters of a structured model by simulating the model and minimizing the difference between the model moments and actual data moments.
+
+The SMM estimator is:
+\begin{equation}
+\begin{aligned}
+\hat{\theta}_{S, T}(W) = \underset{\theta}{\text{argmin}}[\sum_{t=1}^{T} (\mu(x_t) - \frac{1}{S} \sum_{s = 1}^{S} \mu(x(u_t^{s}, \theta)))]^{T} W_T^{-1} [\sum_{t=1}^{T} (\mu(x_t) - \frac{1}{S} \sum_{s = 1}^{S} \mu(x(u_t^{s}, \theta)))]
+\end{aligned}
+\end{equation}
+The most important part is to simulate the moments under several restrictions regarding firm's optimization rules. In this problem set, the policy function $ k' = f(z, k) $ and the value function $ V = v(z, k) $ are used to simulate the moments.
+
+
+\section{Explain The Codes}
+
+I have two separate codes to replicate Tables 2 (unconstraint) and 3 (with costly financing), respectively \footnote{It would be more efficient to combine them into one $ .py $ file. But I really have a time constraint and decide to improve it latter}. Because the only difference between them is that in Table 3, there is an additional parameter, $ \tilde{\phi_0} $, that needs to be estimated. I will focus on demonstrating the steps in replicating Table 2.
+
+There are three main steps to replicate Table 2. First, I need to solve out the partial equilibrium problem for the firm. I.e., given a guessed wage rate, I need to find the optimal investment decision rules. Second, I use the partial equilibrium equations to simulate the moments which are functions of $ \Theta $. Third, I compare the simulated moments with the data moments and use a global minimizer to find the optimal $ \Theta $, or $ \hat{\Theta}$ which returns the lowest difference between the simulated moments and the data moments.
+
+
+\section{Report The Results}
+
+This section reports the replication results. Table 1 reports estimated coefficients and standard errors calculated using identity matrix. Table 2 reports corresponding replication results of Table 3 in the paper.
+
+\begin{table}[h]
+	\centering
+	\caption{Replication Results of Table 2}
+	\begin{tabular}{|c|c|c|c|c|}
+		\hline
+		                & $ \alpha_k $ & $ \psi $ & $ \rho $ & $ \sigma $ \\ \hline
+		Point Estimates & 0.023 & 0.101 & 0.026 & 0.004 \\ \hline
+		Standard Errors & 86.680 & 0.615 & 0.791 & 38.788 \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[h]
+	\centering
+	\caption{Replication Results of Table 3}
+	\begin{tabular}{|c|c|c|c|c|c|}
+		\hline
+		& $ \alpha_k $ & $ \psi $ & $ \rho $ & $ \sigma $ & $ \tilde{\phi_0} $ \\ \hline
+		Point Estimates & 0.307 & 0.065 & 0.165 & 0.445 & 0.001 \\ \hline
+		Standard Errors & 3.297 & 2.269 & 2.382 & 12.770 & $ <0.001 $ \\
+		\hline
+	\end{tabular}
+\end{table}
+
+
+
+\end{document}
